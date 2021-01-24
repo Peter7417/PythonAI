@@ -3,7 +3,6 @@ Tic Tac Toe Player
 """
 
 import math
-import random
 import copy
 
 X = "X"
@@ -121,6 +120,7 @@ def actions(board):
         return val
 
 
+
     raise NotImplementedError
 
 
@@ -128,19 +128,25 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    if board[action[0]][action[1]] is not None:
-        raise Exception("Space not empty")
+    # check action against board boundaries
+    if action[0] < 0 or action[0] > 2 or action[1] < 0 or action[1] > 2:
+        raise Exception("action value outside boundary, fatal error")
 
-    if player(board) == X:
-        (board[action[0]][action[1]]) = X
-        outboard = board
-        return outboard
-    elif player(board) == O:
-        (board[action[0]][action[1]]) = O
-        outboard = board
-        return outboard
+    # check if given action is a tuple
+    if len(action) != 2:
+        raise Exception("action expected to be a tuple, action not accepted")
+
+    y, x = action[0], action[1]
+
+    # make a deep copy to run possible state spaces
+    board_copy = copy.deepcopy(board)
+
+    if board_copy[y][x] != EMPTY:
+        raise Exception("action coordinate is not empty, fatal error")
     else:
-        raise NotImplementedError
+        # here we use the player function to know which letter to put in the copy
+        board_copy[y][x] = player(board)
+        return board_copy
 
 
 
@@ -214,50 +220,28 @@ def utility(board):
     raise NotImplementedError
 
 
-def min_value(board,alpha,beta):
+def min_value(board):
+    # if the game has ended, show winner and end session
+    if terminal(board):
+        return utility(board)
 
-
-    best_move = None
-    min_val = math.inf
+    # find and return the smallest of all maximum possible outcomes
+    min_of_max_val = math.inf
     for action in actions(board):
-        board_copy = copy.deepcopy(board)
-        best_move, v_min = max_value(result(board_copy,action),alpha,beta)
-        if v_min < min_val:
-            best_move = action
-            min_val = v_min
-
-        if min_val <= alpha:
-            break;
-
-        if min_val < beta:
-            beta = min_val
-
-    print("best min move:",best_move)
-    return best_move, min_val
+        min_of_max_val = min(min_of_max_val, max_value(result(board,action)))
+    return min_of_max_val
 
 
-def max_value(board,alpha,beta):
+def max_value(board):
+    # if the game has ended, show winner and end session
+    if terminal(board):
+        return utility(board)
 
-
-    best_move = None
-    max_val = -math.inf
+    # find and return the largest of all minimum possible outcomes
+    max_of_min_val = -math.inf
     for action in actions(board):
-        board_copy = copy.deepcopy(board)
-        best_move, v_max = min_value(result(board_copy, action),alpha,beta)
-
-        if v_max > max_val:
-            best_move = action
-            max_val = v_max
-
-        if max_val >= beta:
-            break;
-
-        if max_val > alpha:
-            alpha = max_val
-
-    print("best max move:", best_move)
-    return best_move, max_val
-
+        max_of_min_val = max(max_of_min_val,min_value(result(board,action)))
+    return max_of_min_val
 
 
 def minimax(board):
@@ -265,19 +249,38 @@ def minimax(board):
     Returns the optimal action for the current player on the board.
     """
 
+    # set up alpha beta pruning
     alpha = -math.inf
     beta = math.inf
 
     if terminal(board):
         return None
 
+    # playing as X, the best move is to get a value of 1, so we must call the min_value function to get the
+    # smallest possible value to be compared against the true small value: alpha,
+    # if the found value is greater than alpha a goal has been reached
     if player(board) == X:
-        m1 = max_value(board,alpha,beta)
-        return m1[0]
+        best_move = None
+        for action in actions(board):
+            min_val = min_value(result(board, action))
+            if min_val > alpha:
+                alpha = min_val
+                best_move = action
+        # return the action that corresponds to the largest min_val
+        return best_move
 
+    # playing as O, the worst move is to get a value of -1, so we must call the max_value function to get the
+    # largest possible value to be compared against the true large value: beta,
+    # if the found value is smaller than beta a goal has been reached
     if player(board) == O:
-        m2 = min_value(board,alpha,beta)
-        return m2[0]
+        best_move = None
+        for action in actions(board):
+            max_val = max_value(result(board,action))
+            if max_val < beta:
+                best_move = action
+                beta = max_val
+        # return the action that corresponds to the smallest max_val
+        return best_move
 
     raise NotImplementedError
 
