@@ -16,33 +16,7 @@ EMPTY = None
 #         print(board[i])
 
 
-def explored(board):
-    lst = []
-    for i in range(3):
-        for j in range(3):
-            if board[i][j] == EMPTY:
-                lst.append(tuple((i,j)))
-
-    if lst == [] and board != initial_state():
-        terminal(board)
-
-    return lst
-
-
-def counter(board):
-    x = None
-    y = None
-    for i in range(3):
-        for j in range(3):
-            if board[i][j] != EMPTY:
-                x = i
-                y = j
-
-    choice = cells(x, y, board)
-    return choice
-
-
-def Xcounter(board):
+def x_counter(board):
     count = 0
     for i in range(3):
         for j in range(3):
@@ -52,7 +26,7 @@ def Xcounter(board):
     return count
 
 
-def Ocounter(board):
+def o_counter(board):
     count = 0
     for i in range(3):
         for j in range(3):
@@ -60,19 +34,6 @@ def Ocounter(board):
                 count += 1
 
     return count
-
-
-def cells(x,y,board):
-    pairs = explored(board)
-
-    if x is None and y is None:
-        # print(pairs)
-        return pairs
-    for i in range(len(pairs)):
-        if pairs[i] == (x,y):
-            del pairs[i]
-            break
-    return pairs
 
 
 def initial_state():
@@ -90,11 +51,13 @@ def player(board):
     """
     if board == initial_state():
         return X
+    # calls a function to count how many X values are present
+    v1 = x_counter(board)
 
-    v1 = Xcounter(board)
+    # calls a function to count how many O values are present
+    v2 = o_counter(board)
 
-    v2 = Ocounter(board)
-
+    # it's know that X value son the board will out weigh O, so return the appropriate player
     if v1 > v2:
         return O
     else:
@@ -107,19 +70,18 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    count = 0
+
+    # store a list of tuples that find all empty spaces and haven them return as all possible actions
+    lst = []
     for i in range(3):
         for j in range(3):
             if board[i][j] == EMPTY:
-                count += 1
-    if count == 9:
-        val = cells(None,None,board)
-        return val
-    else:
-        val = counter(board)
-        return val
+                lst.append(tuple((i, j)))
 
+    if lst == [] and board != initial_state():
+        terminal(board)
 
+    return lst
 
     raise NotImplementedError
 
@@ -221,7 +183,7 @@ def utility(board):
 
 
 def min_value(board):
-    # if the game has ended, show winner and end session
+    # if the game has ended return utility value
     if terminal(board):
         return utility(board)
 
@@ -233,7 +195,7 @@ def min_value(board):
 
 
 def max_value(board):
-    # if the game has ended, show winner and end session
+    # if the game has ended, return utility value
     if terminal(board):
         return utility(board)
 
