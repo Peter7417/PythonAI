@@ -35,6 +35,8 @@ knowledge = And(
     Or(knife, revolver, wrench)
 )
 
+print(knowledge.formula())
+
 # Initial cards
 knowledge.add(And(
     Not(mustard), Not(kitchen), Not(revolver)

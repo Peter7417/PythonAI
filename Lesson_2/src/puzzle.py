@@ -19,6 +19,7 @@ for person in people:
         Symbol(f"{person}Ravenclaw"),
         Symbol(f"{person}Slytherin")
     ))
+print(knowledge.formula())
 
 # Only one house per person.
 for person in people:
@@ -28,6 +29,7 @@ for person in people:
                 knowledge.add(
                     Implication(Symbol(f"{person}{h1}"), Not(Symbol(f"{person}{h2}")))
                 )
+print(knowledge.formula())
 
 # Only one person per house.
 for house in houses:
@@ -37,6 +39,7 @@ for house in houses:
                 knowledge.add(
                     Implication(Symbol(f"{p1}{house}"), Not(Symbol(f"{p2}{house}")))
                 )
+print(knowledge.formula())
 
 knowledge.add(
     Or(Symbol("GilderoyGryffindor"), Symbol("GilderoyRavenclaw"))
