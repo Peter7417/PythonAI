@@ -9,6 +9,9 @@ BKnave = Symbol("B is a Knave")
 CKnight = Symbol("C is a Knight")
 CKnave = Symbol("C is a Knave")
 
+
+# Project logic: A Knight will always say the truth while a Knave will always lie.
+
 # Puzzle 0
 # A says "I am both a knight and a knave."
 knowledge0 = And(
@@ -73,7 +76,7 @@ knowledge3 = And(
 
     # Given that A could be either a Knight or a Knave:
     Or(
-        # If A is a Knight  (will result True from truth table):
+        # If A is a Knight (will result True from truth table):
         And(Biconditional(AKnave, AKnave), Biconditional(AKnight, Not(AKnave))),
         # If A is a Knave (will result False from truth table):
         And(Biconditional(AKnave, AKnight), Biconditional(AKnight, Not(AKnight)))
@@ -90,9 +93,6 @@ knowledge3 = And(
     # C says A is a Knight:
     Biconditional(CKnight, AKnight),
     Biconditional(CKnave, AKnave)
-
-
-
 )
 
 
