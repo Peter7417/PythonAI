@@ -139,7 +139,56 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
-    raise NotImplementedError
+    probability = 0
+
+    for person in people:
+        # define the genetic condition
+        gene = (
+            1 if person in one_gene else
+            2 if person in two_genes else
+            0
+        )
+
+        # trait holds a boolean value
+        trait = person in have_trait
+        # define parents by accessing the appropriate fields in the dictionary
+        mother = people[person]['mother']
+        father = people[person]['father']
+
+        # if neither parents are found in the dictionary, assume the unconditional probability
+        if mother is None and father is None:
+            probability *= PROBS["gene"][gene]
+
+        else:
+            # else, create a tuple initializing both parents
+            passing_chance = {mother: 0, father: 0}
+
+            for parent in passing_chance:
+                passing_chance[parent] = (
+                    # if the parent has 2 genes, it's 100% certain it will be passed unless it's mutated
+                    1 - PROBS["mutation"] if parent == two_genes else
+                    # if only 1 gene is present in the parent, the chance of passing the gene is 50%
+                    0.5 if parent == one_gene else
+                    # if the parent has no gene, it can only form and be passed during a mutation
+                    PROBS["mutation"]
+                )
+
+            probability = (
+                # if both parents pass a gene
+                passing_chance[mother] * passing_chance[father] if gene == 2 else
+
+                # if either the mother or father pass a gene
+                passing_chance[mother] * (1-passing_chance[father]) +
+                (1-passing_chance[mother]) * passing_chance[father] if gene == 1 else
+
+                # if neither parent passed a gene
+                (1 - passing_chance[mother]) * (1 - passing_chance[father])
+            )
+        # calculate the probability that the trait is present or not
+        probability *= PROBS["trait"][gene][trait]
+
+    return probability
+
 
 
 def update(probabilities, one_gene, two_genes, have_trait, p):
@@ -149,7 +198,19 @@ def update(probabilities, one_gene, two_genes, have_trait, p):
     Which value for each distribution is updated depends on whether
     the person is in `have_gene` and `have_trait`, respectively.
     """
-    raise NotImplementedError
+    for person in probabilities:
+        if person in one_gene:
+            gene = 1
+        elif person in two_genes:
+            gene = 2
+        else:
+            gene = 0
+
+        trait = person in have_trait
+
+        # update the probability dictionary only if the person has a gene and if they have a trait
+        probabilities[person]["gene"][gene] += p
+        probabilities[person]['trait'][trait] += p
 
 
 def normalize(probabilities):
@@ -157,7 +218,14 @@ def normalize(probabilities):
     Update `probabilities` such that each probability distribution
     is normalized (i.e., sums to 1, with relative proportions the same).
     """
-    raise NotImplementedError
+    # for every person in the probability dictionary, find their specific fields(gene, trait)
+    for person in probabilities:
+        # for every specific field, find and add the values unique to that field and person
+        for field in probabilities[person]:
+            total = sum(dict(probabilities[person][field]).values())
+            # reassign the value to that specific person and field by dividing the existing value by the total sum
+            for value in probabilities[person][field]:
+                probabilities[person][field][value] /= total
 
 
 if __name__ == "__main__":
