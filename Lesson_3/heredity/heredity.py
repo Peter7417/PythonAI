@@ -166,9 +166,9 @@ def joint_probability(people, one_gene, two_genes, have_trait):
             for parent in passing_chance:
                 passing_chance[parent] = (
                     # if the parent has 2 genes, it's 100% certain it will be passed unless it's mutated
-                    1 - PROBS["mutation"] if parent == two_genes else
+                    1 - PROBS["mutation"] if parent in two_genes else
                     # if only 1 gene is present in the parent, the chance of passing the gene is 50%
-                    0.5 if parent == one_gene else
+                    0.5 if parent in one_gene else
                     # if the parent has no gene, it can only form and be passed during a mutation
                     PROBS["mutation"]
                 )
@@ -188,7 +188,6 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         probability *= PROBS["trait"][gene][trait]
 
     return probability
-
 
 
 def update(probabilities, one_gene, two_genes, have_trait, p):
