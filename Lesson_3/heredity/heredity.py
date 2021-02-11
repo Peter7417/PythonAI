@@ -207,7 +207,7 @@ def update(probabilities, one_gene, two_genes, have_trait, p):
 
         trait = person in have_trait
 
-        # update the probability dictionary only if the person has a gene and if they have a trait
+        # update the probability dictionary for the specific person's fields(gene and trait)
         probabilities[person]["gene"][gene] += p
         probabilities[person]['trait'][trait] += p
 

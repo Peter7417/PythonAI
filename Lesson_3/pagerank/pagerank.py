@@ -80,7 +80,6 @@ def transition_model(corpus, page, damping_factor):
     return t_dict
 
 
-
 def sample_pagerank(corpus, damping_factor, n):
     """
     Return PageRank values for each page by sampling `n` pages
@@ -104,7 +103,7 @@ def sample_pagerank(corpus, damping_factor, n):
             sample = random.choice(list(corpus.items()))[0]
         else:
             # continue to find new samples by pushing the previous sample into the transition model
-            var = transition_model(corpus,sample,damping_factor)
+            var = transition_model(corpus, sample, damping_factor)
             page, weight = zip(*var.items())
             sample = random.choices(page, weights=weight)[0]
 
@@ -118,7 +117,7 @@ def sample_pagerank(corpus, damping_factor, n):
     # Run a check to make sure the total probability is equal to 1 before returning the result
     for i in s_dict:
         total += s_dict[i]
-    if round(total,2) != 1.0:
+    if round(total, 2) != 1.0:
         raise Exception('Sampling probability total is not 1, fatal error')
 
     return s_dict
@@ -172,7 +171,7 @@ def iterate_pagerank(corpus, damping_factor):
     # Run a check to make sure the total probability is equal to 1 before returning the result
     for i in i_dict:
         prob += i_dict[i]
-    if round(prob,2) != 1.0:
+    if round(prob, 2) != 1.0:
         raise Exception('Iteration probability total is not 1, fatal error')
 
     return i_dict

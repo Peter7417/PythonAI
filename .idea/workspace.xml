@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af68858e-014b-42f4-a8b3-ec749b71fb14" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Lesson_2/minesweeper/test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Lesson_2/minesweeper/test2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lesson_2/minesweeper/minesweeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lesson_2/minesweeper/minesweeper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lesson_3/heredity/heredity.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lesson_3/heredity/heredity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lesson_3/pagerank/pagerank.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lesson_3/pagerank/pagerank.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,6 +79,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
