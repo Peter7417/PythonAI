@@ -6,7 +6,7 @@ import tensorflow as tf
 
 from sklearn.model_selection import train_test_split
 
-EPOCHS = 50
+EPOCHS = 10
 IMG_WIDTH = 30
 IMG_HEIGHT = 30
 NUM_CATEGORIES = 43
@@ -103,8 +103,7 @@ def get_model():
         # add 3 hidden layers with a dropout of 25%
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dense(64, activation='relu'),
-        tf.keras.layers.Dense(32, activation='relu'),
-        tf.keras.layers.Dropout(0.25),
+        tf.keras.layers.Dropout(0.33),
 
         # add an output layer for all categories in the sampling directory
         tf.keras.layers.Dense(NUM_CATEGORIES, activation='softmax')
