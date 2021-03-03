@@ -13,6 +13,7 @@ model = tf.keras.models.load_model(sys.argv[1])
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
+
 # Start pygame
 pygame.init()
 size = width, height = 600, 400

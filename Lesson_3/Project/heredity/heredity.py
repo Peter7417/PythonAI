@@ -139,13 +139,13 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
-    probability = 0
+    probability = float(1)
 
     for person in people:
         # define the genetic condition
         gene = (
-            1 if person in one_gene else
             2 if person in two_genes else
+            1 if person in one_gene else
             0
         )
 
@@ -173,7 +173,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
                     PROBS["mutation"]
                 )
 
-            probability = (
+            probability *= (
                 # if both parents pass a gene
                 passing_chance[mother] * passing_chance[father] if gene == 2 else
 
@@ -198,12 +198,11 @@ def update(probabilities, one_gene, two_genes, have_trait, p):
     the person is in `have_gene` and `have_trait`, respectively.
     """
     for person in probabilities:
-        if person in one_gene:
-            gene = 1
-        elif person in two_genes:
-            gene = 2
-        else:
-            gene = 0
+        gene = (
+            2 if person in two_genes else
+            1 if person in one_gene else
+            0
+        )
 
         trait = person in have_trait
 

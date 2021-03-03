@@ -6,7 +6,7 @@ import tensorflow as tf
 
 from sklearn.model_selection import train_test_split
 
-EPOCHS = 10
+EPOCHS = 50
 IMG_WIDTH = 30
 IMG_HEIGHT = 30
 NUM_CATEGORIES = 43
@@ -81,17 +81,17 @@ def get_model():
     The output layer should have `NUM_CATEGORIES` units, one for each category.
     """
     model = tf.keras.models.Sequential([
-        # first convolution layer, learning 32 using a 3 x 3 kernel
+        # first convolution layer, outputting 32 filters using a 3 x 3 kernel
         tf.keras.layers.Conv2D(
-            32, (3, 3), activation='relu', input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)
+            32, 3, activation='relu', input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)
         ),
 
         # first Max-pooling layer using a 2 x 2 pool size
         tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
 
-        # second convolution layer, learning 64 using a 3 x 3 kernel
+        # second convolution layer, outputting 64 filters using a 3 x 3 kernel
         tf.keras.layers.Conv2D(
-            64, (3, 3), activation='relu'
+            64, 3, activation='relu'
         ),
 
         # second Max-pooling layer using a 2 x 2 pool size
@@ -100,11 +100,11 @@ def get_model():
         # flatten units
         tf.keras.layers.Flatten(),
 
-        # add 3 hidden layers with a dropout of 20%
+        # add 3 hidden layers with a dropout of 25%
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dense(64, activation='relu'),
         tf.keras.layers.Dense(32, activation='relu'),
-        tf.keras.layers.Dropout(0.20),
+        tf.keras.layers.Dropout(0.25),
 
         # add an output layer for all categories in the sampling directory
         tf.keras.layers.Dense(NUM_CATEGORIES, activation='softmax')

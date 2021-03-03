@@ -59,6 +59,10 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
+    # create an evidence and label list
+    evidence = []
+    label = []
+
     # create a dictionary to hold key months matching to their respective values
     month = {'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'June': 5, 'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9,
              'Nov': 10, 'Dec': 11}
@@ -67,12 +71,6 @@ def load_data(filename):
     with open(filename) as data:
         # use the dictionary csv reader to be able to call the cell values by the csv column header names
         reader = csv.DictReader(data)
-        next(reader)
-
-        # create an evidence and label list
-        evidence = []
-        label = []
-
         # read each row in the csv and append the evidence and labels to their respective lists
         for row in reader:
             evidence.append([
